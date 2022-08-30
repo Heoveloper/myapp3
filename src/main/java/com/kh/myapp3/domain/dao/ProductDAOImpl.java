@@ -26,16 +26,17 @@ public class ProductDAOImpl implements ProductDAO {
 //        this.jt = jt;
 //    }
 
-
     //등록
     @Override
     public Integer save(Product product) {
         StringBuffer sql = new StringBuffer();
-            sql.append("INSERT INTO product VALUES (product_product_id_seq.nextval, ?, ?, ?)");
+        sql.append("INSERT INTO product VALUES (product_product_id_seq.nextval, ?, ?, ?)");
 //        sql.append("INSERT INTO product (product_id, pname, quantity, price) ");
 //        sql.append("VALUES (product_product_id_seq.nextval, '모니터', 20, 900000) ");
 
-        class PreparedStatementCreatorImpl implements PreparedStatementCreator {
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        jt.update(new PreparedStatementCreator() {
+
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"product_id"});
@@ -44,12 +45,31 @@ public class ProductDAOImpl implements ProductDAO {
                 pstmt.setInt(3, product.getPrice());
                 return pstmt;
             }
-        }
-
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jt.update(new PreparedStatementCreatorImpl(), keyHolder);
+        }, keyHolder);
         Integer product_id = Integer.valueOf(keyHolder.getKeys().get("product_id").toString());
 
         return product_id;
     }
+
+
+    //등록
+//    @Override
+//    public Integer save(Product product) {
+//        StringBuffer sql = new StringBuffer();
+//        sql.append("INSERT INTO product VALUES (product_product_id_seq.nextval, ?, ?, ?)");
+//
+//        KeyHolder keyHolder = new GeneratedKeyHolder();
+//        jt.update(
+//            (con) -> {
+//                PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"product_id"});
+//                pstmt.setString(1, product.getPname());
+//                pstmt.setInt(2, product.getQuantity());
+//                pstmt.setInt(3, product.getPrice());
+//                return pstmt;
+//            }
+//        , keyHolder);
+//
+//        Integer product_id = Integer.valueOf(keyHolder.getKeys().get("product_id").toString());
+//        return product_id;
+//    }
 }
