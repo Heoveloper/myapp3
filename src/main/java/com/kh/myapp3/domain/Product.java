@@ -1,8 +1,12 @@
 package com.kh.myapp3.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Data
+@Data   //Getter, Setter, ToString, EqualsAndHashCode, RequiredArgsConstructor(멤버필드 중 final 키워드가 있는 멤버를 매개변수로 갖는 생성자)
+@NoArgsConstructor  //디폴트 생성자
+@AllArgsConstructor //모든 멤버필드를 매개변수로 갖는 생성자
 public class Product {
     private Long productId;  //상품번호  PRODUCT_ID	NUMBER(10,0)	No		1
     private String pname;       //상품명   PNAME	VARCHAR2(30 BYTE)	Yes		2

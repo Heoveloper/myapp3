@@ -3,6 +3,7 @@ package com.kh.myapp3.domain.dao;
 import com.kh.myapp3.domain.Product;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
@@ -62,14 +63,19 @@ public class ProductDAOImpl implements ProductDAO {
         sql.append("FROM product ");
         sql.append("WHERE product_id = ? ");
 
-        Product product = jt.queryForObject(
-                sql.toString(), new BeanPropertyRowMapper<>(Product.class), productId);
+        Product product = null;
+        try {
+            product = jt.queryForObject(
+                    sql.toString(), new BeanPropertyRowMapper<>(Product.class), productId);
+        } catch (EmptyResultDataAccessException e) {
+            log.info("삭제대상 상품이 없습니다. 상품아이디={}", productId);
+        }
 
         return product;
     }
 
     @Override
-    public void update(Long productId, Product product) {
+    public Product update(Long productId, Product product) {
         StringBuffer sql = new StringBuffer();
         sql.append("UPDATE product ");
         sql.append("SET pname = ?, ");
@@ -78,14 +84,16 @@ public class ProductDAOImpl implements ProductDAO {
         sql.append("WHERE product_id = ? ");
 
         jt.update(sql.toString(), product.getPname(), product.getQuantity(), product.getPrice(), productId);
+        return product;
     }
 
     //삭제
     @Override
-    public void delete(Long productId) {
+    public Product delete(Long productId) {
         String sql = "DELETE FROM product WHERE product_id = ? ";
         jt.update(sql, productId);
 
+        return null;
     }
 
     //목록
@@ -97,7 +105,7 @@ public class ProductDAOImpl implements ProductDAO {
         sql.append("FROM product ");
 
         //case1 자동매핑) sql결과 레코드와 동일한 구조의 java객체가 존재할 경우
-        List<Product> result = jt.query(sql.toString(), new BeanPropertyRowMapper<Product>());
+        List<Product> result = jt.query(sql.toString(), new BeanPropertyRowMapper<>(Product.class));
 
         //case2 수동매핑) sql결과 레코드의 컬럼명과 java객체의 멤버이름이 다른 경우 or 타입이 다른 경우
 //        List<Product> result =
@@ -115,25 +123,19 @@ public class ProductDAOImpl implements ProductDAO {
         return result;
     }
 
+    //전체 삭제
+    @Override
+    public void deleteAll() {
+        String sql = "delete from product";
+        int rows = jt.update(sql);
+        log.info("삭제건수: {}", rows);
+    }
 
-    //등록
-//    @Override
-//    public Integer save(Product product) {
-//        StringBuffer sql = new StringBuffer();
-//        sql.append("INSERT INTO product VALUES (product_product_id_seq.nextval, ?, ?, ?)");
-//
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
-//        jt.update(
-//            (con) -> {
-//                PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"product_id"});
-//                pstmt.setString(1, product.getPname());
-//                pstmt.setInt(2, product.getQuantity());
-//                pstmt.setInt(3, product.getPrice());
-//                return pstmt;
-//            }
-//        , keyHolder);
-//
-//        Integer product_id = Integer.valueOf(keyHolder.getKeys().get("product_id").toString());
-//        return product_id;
-//    }
+    //상품아이디 생성
+    @Override
+    public Long generatePid() {
+        String sql = "SELECT product_product_id_seq.nextval FROM dual";
+        Long newProductId = jt.queryForObject(sql, Long.class);
+        return newProductId;
+    }
 }

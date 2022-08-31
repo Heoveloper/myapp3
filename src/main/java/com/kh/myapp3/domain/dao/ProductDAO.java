@@ -22,19 +22,33 @@ public interface ProductDAO {
 
     /**
      * 수정
+     *
      * @param product 수정할 상품정보
+     * @return
      */
-    void update(Long productId, Product product);
+    Product update(Long productId, Product product);
 
     /**
      * 삭제
+     *
      * @param productId 삭제할 상품아이디
+     * @return
      */
-    void delete(Long productId);
+    Product delete(Long productId);
 
     /**
      * 목록
      * @return 상품전체
      */
     List<Product> findAll();
+
+    /**
+     * 전체삭제
+     */
+    void deleteAll();
+
+    /**
+     * 상품아이디 생성
+     */
+    Long generatePid();
 }

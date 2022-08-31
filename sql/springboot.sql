@@ -40,3 +40,13 @@ FROM product;
 
 --
 select * from product;
+delete from product;
+commit;
+--
+
+SELECT product_product_id_seq.currval
+FROM dual;
+SELECT 'm-' || product_product_id_seq.currval
+FROM dual;
+SELECT 'nm' || product_product_id_seq.currval
+FROM dual;

@@ -2,6 +2,7 @@ package com.kh.myapp3.web;
 
 import com.kh.myapp3.domain.Product;
 import com.kh.myapp3.domain.svc.ProductSVC;
+import com.kh.myapp3.web.form.ItemForm;
 import com.kh.myapp3.web.form.SaveForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,14 +47,21 @@ public class ProductController {
     //상품 개별 조회
     @GetMapping("/{pid}")
     public String findByProductId(
-            @PathVariable("pid") String pid,
+            @PathVariable("pid") Long pid,
             Model model
     ) {
         //DB에서 상품조회
+        Product findedProduct = productSVC.findById(pid);
 
+        //Product => ItemForm 복사
+        ItemForm itemForm = new ItemForm();
+        itemForm.setProductId(findedProduct.getProductId());
+        itemForm.setPname(findedProduct.getPname());
+        itemForm.setQuantity(findedProduct.getQuantity());
+        itemForm.setPrice(findedProduct.getPrice());
 
-        Product product = new Product();
-        model.addAttribute("product", product);
+        //view에서 참조하기 위해 model객체에 저장
+        model.addAttribute("itemForm", itemForm);
 
         return "product/itemForm";    //상품상세 view
     }
