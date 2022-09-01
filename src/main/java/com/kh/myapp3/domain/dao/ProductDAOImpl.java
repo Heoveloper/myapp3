@@ -71,7 +71,8 @@ public class ProductDAOImpl implements ProductDAO {
 
         return product;
     }
-
+    
+    //수정
     @Override
     public void update(Long productId, Product product) {
         StringBuffer sql = new StringBuffer();
@@ -98,6 +99,7 @@ public class ProductDAOImpl implements ProductDAO {
 
         sql.append("SELECT product_id, pname, quantity, price ");
         sql.append("FROM product ");
+        sql.append("ORDER BY product_id ASC ");
 
         //case1 자동매핑) sql결과 레코드와 동일한 구조의 java객체가 존재할 경우
         List<Product> result = jt.query(sql.toString(), new BeanPropertyRowMapper<>(Product.class));
@@ -130,7 +132,7 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public Long generatePid() {
         String sql = "SELECT product_product_id_seq.nextval FROM dual";
-        Long newProductId = jt.queryForObject(sql, Long.class);
+        Long newProductId = jt.queryForObject(sql, Long.class); //단일레코드 단일컬럼
         return newProductId;
     }
 }

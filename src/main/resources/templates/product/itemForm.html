@@ -14,27 +14,37 @@
         <hr>
         <form action="">
             <div>
-                <div><lable>상품아이디</lable><input type="text" readonly th:value="${itemForm.productId}"></div>
-                <div><lable>상품명</lable><input type="text" readonly th:value="${itemForm.pname}"></div>
-                <div><lable>수량</lable><input type="text" readonly th:value="${itemForm.quantity}"></div>
-                <div><lable>가격</lable><input type="text" readonly th:value="${itemForm.price}"></div>
+                <div><lable for="">상품아이디</lable><input type="text" readonly name="pid" th:value="${itemForm.productId}"></div>
+                <div><lable for="">상품명</lable><input type="text" readonly name="pname" th:value="${itemForm.pname}"></div>
+                <div><lable for="">수량</lable><input type="text" readonly name="quantity" th:value="${itemForm.quantity}"></div>
+                <div><lable for="">가격</lable><input type="text" readonly name="price" th:value="${itemForm.price}"></div>
                 <div>
-                    <button id="listBtn">목록</button>
-                    <button type="button" id="editBtn">수정</button>
-                    <button id="delBtn">삭제</button>
+                    <button id="listBtn" type="button">목록</button>
+                    <button id="editBtn" type="button">수정</button>
+                    <button id="delBtn" type="button">삭제</button>
                 </div>
             </div>
         </form>
     </div>
     <script>
+        const pid = document.querySelector('input[name=pid]').value;
+
+        //목록
         listBtn.addEventListener('click', e => {
-            location.href = '/products/';
+            location.href = '/products';
         });
+
+        //수정
         editBtn.addEventListener('click', e => {
-            location.href = '/products/53/edit';
+            const url = `/products/${pid}/edit`;
+            location.href = url;
         });
+
+        //삭제
         delBtn.addEventListener('click', e => {
-            location.href = '/products/';
+            if(!confirm('삭제하시겠습니까?')) return;
+            const url = `/products/${pid}/del`;
+            location.href = url;
         });
     </script>
 </body>

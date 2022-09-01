@@ -22,23 +22,11 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td><a href="/products/1/edit">프린터</a></td>
-                    <td>10</td>
-                    <td>1,100,000</td>
-                </tr>
-                <tr>
-                    <td>2</td>
-                    <td><a href="/products/2/edit">모니터</a></td>
-                    <td>20</td>
-                    <td>2,200,000</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td><a href="/products/3/edit">컴퓨터</a></td>
-                    <td>30</td>
-                    <td>3,300,000</td>
+                <tr th:each="product : ${list}">
+                    <td th:text="${product.productId}">1</td>
+                    <td><a href="/products/1" th:href="@{/products/{pid}(pid=${product.productId}, name=${product.pname})}" th:text="${product.pname}">컴퓨터</a></td>
+                    <td th:text="${product.quantity}">10</td>
+                    <td th:text="${product.price}">1300000</td>
                 </tr>
             </tbody>
         </table>
