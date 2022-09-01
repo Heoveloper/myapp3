@@ -75,7 +75,7 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public Product update(Long productId, Product product) {
+    public void update(Long productId, Product product) {
         StringBuffer sql = new StringBuffer();
         sql.append("UPDATE product ");
         sql.append("SET pname = ?, ");
@@ -84,16 +84,13 @@ public class ProductDAOImpl implements ProductDAO {
         sql.append("WHERE product_id = ? ");
 
         jt.update(sql.toString(), product.getPname(), product.getQuantity(), product.getPrice(), productId);
-        return product;
     }
 
     //삭제
     @Override
-    public Product delete(Long productId) {
+    public void delete(Long productId) {
         String sql = "DELETE FROM product WHERE product_id = ? ";
         jt.update(sql, productId);
-
-        return null;
     }
 
     //목록
@@ -109,8 +106,8 @@ public class ProductDAOImpl implements ProductDAO {
 
         //case2 수동매핑) sql결과 레코드의 컬럼명과 java객체의 멤버이름이 다른 경우 or 타입이 다른 경우
 //        List<Product> result =
-//        List<Product> result =
 //        jt.query(sql.toString(), new RowMapper<Product>() {
+//
 //            @Override
 //            public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
 //                Product product = new Product();

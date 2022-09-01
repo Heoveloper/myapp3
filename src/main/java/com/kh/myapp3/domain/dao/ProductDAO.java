@@ -26,15 +26,15 @@ public interface ProductDAO {
      * @param product 수정할 상품정보
      * @return
      */
-    Product update(Long productId, Product product);
+    void update(Long productId, Product product);
 
     /**
      * 삭제
      *
-     * @param productId 삭제할 상품아이디
+     * @param productId 상품아이디
      * @return
      */
-    Product delete(Long productId);
+    void delete(Long productId);
 
     /**
      * 목록
