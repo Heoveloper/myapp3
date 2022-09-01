@@ -34,12 +34,9 @@ public class ProductDAOImpl implements ProductDAO {
     public Product save(Product product) {
         StringBuffer sql = new StringBuffer();
         sql.append("INSERT INTO product VALUES (product_product_id_seq.nextval, ?, ?, ?)");
-//        sql.append("INSERT INTO product (product_id, pname, quantity, price) ");
-//        sql.append("VALUES (product_product_id_seq.nextval, '모니터', 20, 900000) ");
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jt.update(new PreparedStatementCreator() {
-
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
                 PreparedStatement pstmt = con.prepareStatement(sql.toString(), new String[]{"product_id"});
@@ -49,6 +46,7 @@ public class ProductDAOImpl implements ProductDAO {
                 return pstmt;
             }
         }, keyHolder);
+
         Long product_id = Long.valueOf(keyHolder.getKeys().get("product_id").toString());
 
         product.setProductId(product_id);
@@ -65,7 +63,7 @@ public class ProductDAOImpl implements ProductDAO {
 
         Product product = null;
         try {
-            product = jt.queryForObject(
+            product = jt.queryForObject( //단일레코드
                     sql.toString(), new BeanPropertyRowMapper<>(Product.class), productId);
         } catch (EmptyResultDataAccessException e) {
             log.info("삭제대상 상품이 없습니다. 상품아이디={}", productId);
