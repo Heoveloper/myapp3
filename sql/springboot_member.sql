@@ -58,9 +58,9 @@ where member_id='2';
 
 --수정
 update member
-set pw='pw@gur456',
-    nickname='허준',
-    udate=systimestamp
+set pw = 'pw@gur456',
+    nickname = '허준',
+    udate = systimestamp
 where member_id='2';
 
 --삭제 전 확인
@@ -79,3 +79,5 @@ from member;
 --회원번호 생성
 select member_member_id_seq.nextval from dual;
 select member_member_id_seq.nextval from dual;
+
+commit;
