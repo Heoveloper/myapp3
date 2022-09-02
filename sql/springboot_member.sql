@@ -54,14 +54,14 @@ values ('wnsgur123@gmail.com', 'pw@gur123', '준별');
 --조회
 select member_id, email, pw, nickname, cdate, udate
 from member
-where email='wnsgur123@gmail.com';
+where member_id='2';
 
 --수정
 update member
 set pw='pw@gur456',
     nickname='허준',
     udate=systimestamp
-where email='wnsgur123@gmail.com';
+where member_id='2';
 
 --삭제 전 확인
 select *

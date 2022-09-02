@@ -24,6 +24,10 @@ public class Member {
 
     //Setter
 
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
+    }
+
     public void setPw(String pw) {
         this.pw = pw;
     }

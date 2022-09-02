@@ -21,22 +21,25 @@ public class MemberDAOImpl implements MemberDAO {
      * 가입
      *
      * @param member 가입정보
-     * @return 회원
+     * @return 회원아이디
      */
     @Override
-    public Member insert(Member member) {
+    public int insert(Member member) {
+        int result = 0;
         StringBuffer sql = new StringBuffer();
         sql.append("insert into member (member_id, email, pw, nickname) ");
         sql.append("values (?, ?, ?, ?) ");
 
-        Long memberId = generateMemberId();
-        jt.update(sql.toString(), generateMemberId(), member.getEmail(), member.getPw(), member.getNickname());
+        result = jt.update(sql.toString(), generateMemberId(), member.getEmail(), member.getPw(), member.getNickname());
 
-        return findById(memberId);
+        return result;
     }
 
-    //신규 회원번호 생성
-    private Long generateMemberId() {
+    /**
+     * 신규 회원아이디(내부관리용) 생성
+     * @return 회원아이디
+     */
+    public Long generateMemberId() {
         String sql = "select member_member_id_seq.nextval from dual ";
         Long memberId = jt.queryForObject(sql, Long.class);
         return memberId;
@@ -71,20 +74,35 @@ public class MemberDAOImpl implements MemberDAO {
      *
      * @param memberId 아이디
      * @param member   수정할 정보
+     * @return 수정건수
      */
     @Override
-    public void update(Long memberId, Member member) {
+    public int update(Long memberId, Member member) {
+        int result = 0;
+        StringBuffer sql = new StringBuffer();
+        sql.append("update member ");
+        sql.append("   set pw = ?, ");
+        sql.append("       nickname = ?, ");
+        sql.append("       udate = systimestamp ");
+        sql.append(" where member_id = ? ");
 
+        result = jt.update(sql.toString(), member.getPw(), member.getNickname(), memberId);
+        return result;
     }
 
     /**
      * 탈퇴
      *
      * @param memberId 아이디
+     * @return 삭제건수
      */
     @Override
-    public void del(Long memberId) {
+    public int del(Long memberId) {
+        int result = 0;
+        String sql = "delete from member where member_id = ? ";
 
+        result = jt.update(sql, memberId);
+        return result;
     }
 
     /**
@@ -94,6 +112,10 @@ public class MemberDAOImpl implements MemberDAO {
      */
     @Override
     public List<Member> all() {
-        return null;
+        StringBuffer sql = new StringBuffer();
+        sql.append("select member_id, email, pw, nickname ");
+        sql.append("  from member ");
+
+        return jt.query(sql.toString(), new BeanPropertyRowMapper<>(Member.class));
     }
 }
