@@ -20,7 +20,7 @@ public class ThymeLeafController {
         model.addAttribute("hello", "<b>반갑습니다</b>");
         model.addAttribute("uhello", "<b>반갑습니다</b>");
 
-        Person p1 = new Person("홍길남", 40);
+        Person p1 = new Person("홍길남", 30);
         Person p2 = new Person("홍길북", 50);
 
         model.addAttribute("p1", p1);
