@@ -22,7 +22,7 @@ class MemberSVCImplTest {
     @DisplayName("가입")
     @Order(1)
     void insert() {
-        Member member = new Member("test3@test.com", "1234", "별칭1");
+        member = new Member("test10@test.com", "1234", "별칭1");
 
         Member insertedMember = memberSVC.insert(member);
         log.info("insertedMember={}", insertedMember);
