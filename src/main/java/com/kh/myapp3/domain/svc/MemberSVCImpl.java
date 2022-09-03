@@ -11,7 +11,7 @@ import java.util.List;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class MemberSVCImpl implements MemberSVC {
+public class MemberSVCImpl implements MemberSVC{
 
     private final MemberDAO memberDAO;
 
@@ -24,7 +24,7 @@ public class MemberSVCImpl implements MemberSVC {
     @Override
     public Member insert(Member member) {
 
-        //회원아이디 생성
+        //회원 아이디 생성
         Long generateMemberId = memberDAO.generateMemberId();
         member.setMemberId(generateMemberId);
         memberDAO.insert(member);
@@ -34,7 +34,7 @@ public class MemberSVCImpl implements MemberSVC {
     /**
      * 조회 by 회원아이디
      *
-     * @param memberId
+     * @param memberId 회원아이디
      * @return 회원정보
      */
     @Override

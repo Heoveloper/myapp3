@@ -22,13 +22,13 @@ class MemberSVCImplTest {
     @DisplayName("가입")
     @Order(1)
     void insert() {
-        member = new Member("test10@test.com", "1234", "별칭1");
+        Member newMember = new Member("test5@test.com","1234","별칭5");
 
-        Member insertedMember = memberSVC.insert(member);
-        log.info("insertedMember={}", insertedMember);
-        Assertions.assertThat(insertedMember.getEmail()).isEqualTo(member.getEmail());
-        Assertions.assertThat(insertedMember.getPw()).isEqualTo(member.getPw());
-        Assertions.assertThat(insertedMember.getNickname()).isEqualTo(member.getNickname());
+        member = memberSVC.insert(newMember);
+        log.info("insertedMember={}", member);
+        Assertions.assertThat(member.getEmail()).isEqualTo(newMember.getEmail());
+        Assertions.assertThat(member.getPw()).isEqualTo(newMember.getPw());
+        Assertions.assertThat(member.getNickname()).isEqualTo(newMember.getNickname());
     }
 
     @Test
@@ -48,10 +48,10 @@ class MemberSVCImplTest {
 
         //수정 정보
         Member m = new Member();
-        m.setPw("9999");
-        m.setNickname("별칭9999");
+        m.setPw(pw);
+        m.setNickname(nickname);
         //수정
-        memberSVC.update(member.getMemberId(), m);
+        memberSVC.update(member.getMemberId(),m);
         //조회
         Member findedMember = memberSVC.findById(member.getMemberId());
         //비교
