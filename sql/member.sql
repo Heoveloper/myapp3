@@ -2,7 +2,7 @@
 drop table member;
 drop sequence member_member_id_seq;
 
---member Å×ÀÌºí »ý¼º
+--member ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½ï¿½
 create table member (
     member_id   number(8),
     email       varchar2(40),
@@ -20,40 +20,40 @@ alter table member modify nickname constraint member_nickname_nn not null;
 alter table member modify cdate constraint member_cdate_nn not null;
 alter table member modify udate constraint member_udate_nn not null;
 
---È¸¿ø¹øÈ£ ½ÃÄö½º »ý¼º
+--È¸ï¿½ï¿½ï¿½ï¿½È£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 create sequence member_member_id_seq;
 
---»ý¼º (create)
+--ï¿½ï¿½ï¿½ï¿½ (create)
 insert into member (member_id, email, pw, nickname)
-values (member_member_id_seq.nextval, 'test1@test.com', '1234', 'º°Äª1');
+values (member_member_id_seq.nextval, 'test1@test.com', '1234', 'ï¿½ï¿½Äª1');
 insert into member (member_id, email, pw, nickname)
-values (member_member_id_seq.nextval, 'test2@test.com', '1234', 'º°Äª2');
+values (member_member_id_seq.nextval, 'test2@test.com', '1234', 'ï¿½ï¿½Äª2');
 insert into member (member_id, email, pw, nickname)
-values (member_member_id_seq.nextval, 'test3@test.com', '1234', 'º°Äª3');
+values (member_member_id_seq.nextval, 'test3@test.com', '1234', 'ï¿½ï¿½Äª3');
 
---Á¶È¸ (read)
+--ï¿½ï¿½È¸ (read)
 select member_id, email, pw, nickname, cdate, udate
   from member
  where member_id = '2';
 
---¼öÁ¤ (update)
+--ï¿½ï¿½ï¿½ï¿½ (update)
 update member
-   set pw = 5678,
-       nickname = 'º°Äª22',
+   set nickname = 'ï¿½ï¿½Äª22',
        udate = systimestamp
- where member_id = '2';
+ where member_id = '2'
+   and pw = 5678;
 --commit
 commit; 
 
---»èÁ¦ (delete)
+--ï¿½ï¿½ï¿½ï¿½ (delete)
 delete from member
  where member_id = '2';
 
---È¸¿ø¹øÈ£ »ý¼º
+--È¸ï¿½ï¿½ï¿½ï¿½È£ ï¿½ï¿½ï¿½ï¿½
 select member_member_id_seq.nextval from dual;
 select member_member_id_seq.currval from dual;
 --rollback
 rollback;
 
---È¸¿ø¸ñ·Ï Á¶È¸
+--È¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸
 select * from member;

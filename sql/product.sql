@@ -3,7 +3,7 @@ drop table member;
 drop sequence product_product_id_seq;
 
 --product 테이블 생성
-CREATE TABLE product(
+create table product(
     product_id  NUMBER(10),
     pname       VARCHAR2(30),
     quantity    NUMBER(10),

@@ -1,12 +1,14 @@
 package com.kh.myapp3.web;
 
+import com.kh.myapp3.domain.Member;
 import com.kh.myapp3.domain.svc.MemberSVC;
+import com.kh.myapp3.web.form.member.AddForm;
+import com.kh.myapp3.web.form.member.EditForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @Controller
@@ -25,7 +27,15 @@ public class MemberController {
 
     //가입처리 POST /members/add
     @PostMapping("/add")
-    public String add() {
+    public String add(AddForm addForm) {
+        //검증 로직
+        log.info("addForm={}", addForm);
+
+        Member member = new Member();
+        member.setEmail(addForm.getEmail());
+        member.setPw(addForm.getPw());
+        member.setNickname(addForm.getNickname());
+        memberSVC.insert(member);
 
         return "login/loginForm";   //로그인 화면
     }
@@ -39,15 +49,26 @@ public class MemberController {
 
     //수정화면 GET /members/{id}/edit
     @GetMapping("/{id}/edit")
-    public String editForm() {
+    public String editForm(@PathVariable("id") Long id, Model model) {
 
-        return "/member/editForm";  //회원 수정화면
+        Member findedMember = memberSVC.findById(id);
+        model.addAttribute("member", findedMember);
+
+        return "member/editForm";  //회원 수정화면
     }
 
     //수정처리 POST /members/{id}/edit
     @PostMapping("/{id}/edit")
-    public String edit() {
+    public String edit(@PathVariable("id") Long id, EditForm editForm) {
 
+        Member member = new Member();
+        member.setPw(editForm.getPw());
+        member.setNickname(editForm.getNickname());
+
+        int updatedRow = memberSVC.update(id, member);
+        if(updatedRow == 0) {
+            return "member/editForm";
+        }
         return "redirect:/members/{id}";    //회원 상세화면
     }
 
@@ -60,8 +81,11 @@ public class MemberController {
 
     //탈퇴처리 GET /members/{id}/del
     @PostMapping("/{id}/del")
-    public String del() {
-
+    public String del(@PathVariable("id") Long id, @RequestParam("pw") String pw) {
+        int deletedRow = memberSVC.del(id, pw);
+        if(deletedRow == 0) {
+            return "member/delForm";
+        }
         return "redirect:/";
     }
 
