@@ -100,7 +100,7 @@ public class MemberDAOImpl implements MemberDAO{
         int result = 0;
         String sql = "delete from member where member_id = ? and pw = ? ";
 
-        result = jt.update(sql, memberId);
+        result = jt.update(sql, memberId, pw);
         return result;
     }
 
