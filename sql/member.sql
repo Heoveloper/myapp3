@@ -20,7 +20,7 @@ alter table member modify nickname constraint member_nickname_nn not null;
 alter table member modify cdate constraint member_cdate_nn not null;
 alter table member modify udate constraint member_udate_nn not null;
 
---È¸ï¿½ï¿½ï¿½ï¿½È£ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+--È¸¿ø¹øÈ£ ½ÃÄö½º »ý¼º
 create sequence member_member_id_seq;
 
 --»ý¼º (create)
