@@ -22,7 +22,7 @@ class MemberSVCImplTest {
     @DisplayName("가입")
     @Order(1)
     void insert() {
-        Member newMember = new Member("test22@test.com","1234","별칭22");
+        Member newMember = new Member("test21@test.com","1234","별칭21");
 
         member = memberSVC.insert(newMember);
         log.info("insertedMember={}", member);
@@ -43,7 +43,7 @@ class MemberSVCImplTest {
     @DisplayName("수정")
     @Order(3)
     void update() {
-        String pw = "9999";
+        String pw = "1234";
         String nickname = "별칭9999";
 
         //수정 정보
@@ -59,14 +59,14 @@ class MemberSVCImplTest {
         Assertions.assertThat(findedMember.getNickname()).isEqualTo(nickname);
     }
 
-    @Test
-    @DisplayName("탈퇴")
-    @Order(5)
-    void del() {
-        memberSVC.del(member.getMemberId(), member.getPw());
-        Member findedMember = memberSVC.findById(member.getMemberId());
-        Assertions.assertThat(findedMember).isNull();
-    }
+//    @Test
+//    @DisplayName("탈퇴")
+//    @Order(5)
+//    void del() {
+//        memberSVC.del(member.getMemberId(), member.getPw());
+//        Member findedMember = memberSVC.findById(member.getMemberId());
+//        Assertions.assertThat(findedMember).isNull();
+//    }
 
     @Test
     @DisplayName("목록")
