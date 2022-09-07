@@ -57,7 +57,7 @@ public class AdminMemberController {
         memberForm.setCdate(findedMember.getCdate());
         memberForm.setUdate(findedMember.getUdate());
 
-        model.addAttribute("memberForm", findedMember);
+        model.addAttribute("memberForm", memberForm);
         return "admin/member/memberForm"; //회원 상세 화면
     }
 
@@ -93,7 +93,7 @@ public class AdminMemberController {
     }
 
     //삭제처리
-    @PostMapping("/{id}/del")
+    @GetMapping("/{id}/del")
     public String del(@PathVariable("id") Long id) {
         int deletedRow = adminMemberSVC.del(id);
         if(deletedRow == 0) {

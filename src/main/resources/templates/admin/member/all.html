@@ -50,9 +50,12 @@
 		</tbody>
 	</table>
 	<script th:inline="javascript">
-		const $tr = document.querySelector("table tbody tr");
+		const $tr = document.querySelector("table tbody");
 		$tr.addEventListener('click', e => {
-			console.log(e.target.children);
+			if(e.target.tagname == 'TR') {
+				const memberId = e.target.parentElement.dataset.memberId;
+				location.href = `/admin/members/${memberId}`;
+			}
 		});
 	</script>
 </body>
