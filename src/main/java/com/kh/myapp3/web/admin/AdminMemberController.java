@@ -23,17 +23,23 @@ public class AdminMemberController {
 
     //등록화면
     @GetMapping("/add")
-    public String addForm() {
-
+    public String addForm(Model model) {
+        model.addAttribute("addform", new AddForm());
         return "admin/member/addForm";    //등록 화면
     }
 
     //등록처리
     @PostMapping("/add")
-    public String add(AddForm addForm) {
-        //검증 로직
+    public String add(@ModelAttribute AddForm addForm) {
+        //검증로직
+//        model.addAttribute("addForm", form);
         log.info("addForm={}", addForm);
+        if(addForm.getEmail().trim().length() == 0) {
 
+            return "admin/member/addForm";  //등록 화면 다시 띄우기
+        }
+
+        //회원등록
         Member member = new Member();
         member.setEmail(addForm.getEmail());
         member.setPw(addForm.getPw());
