@@ -39,20 +39,28 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="rec, recStat : ${list}" th:onclick="|location.href = '@{/admin/members/{id}(id=${rec.memberId})}'|">
+			<tr th:each="rec, recStat : ${list}" th:data-member-id="${rec.memberId}">
 				<td>[[${recStat.count}]]</td>
 <!--				<td><a th:href="@{|/admin/members/${rec.memberId}|}">[[${rec.memberId}]]</a></td>-->
-				<td><a th:href="@{|/admin/members/{id}(id=${rec.memberId})|}">[[${rec.memberId}]]</a></td>
+				<td><!--a th:href="@{|/admin/members/{id}(id=${rec.memberId})|}"-->[[${rec.memberId}]]</a></td>
 				<td>[[${rec.email}]]</td>
 				<td>[[${#temporals.format(rec.cdate, 'yyyy-MM-dd HH:mm:ss')}]]</td>
 				<td>[[${#temporals.format(rec.udate, 'yyyy-MM-dd HH:mm:ss')}]]</td>
 			</tr>
 		</tbody>
 	</table>
-	<script th:inline="javascript">
-		const $tr = document.querySelector("table tbody");
-		$tr.addEventListener('click', e => {
-			if(e.target.tagname == 'TR') {
+	<div><button type="button" id="addBtn">등록</button></div>
+	<script>
+		//등록
+		addBtn.addEventListener('click', e => {
+			console.log('등록')
+			location.href = `/admin/members/add`;
+		});
+
+		//행 클릭시 상세 조회
+		const $tbody = document.querySelector("table tbody");
+		$tbody.addEventListener('click', e => {
+			if(e.target.tagName == 'TD') {
 				const memberId = e.target.parentElement.dataset.memberId;
 				location.href = `/admin/members/${memberId}`;
 			}
