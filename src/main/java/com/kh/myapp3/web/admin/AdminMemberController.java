@@ -24,7 +24,7 @@ public class AdminMemberController {
     //등록화면
     @GetMapping("/add")
     public String addForm(Model model) {
-        model.addAttribute("addform", new AddForm());
+        model.addAttribute("addForm", new AddForm());
         return "admin/member/addForm";    //등록 화면
     }
 
