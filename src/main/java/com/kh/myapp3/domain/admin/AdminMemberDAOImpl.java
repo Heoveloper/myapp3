@@ -1,18 +1,19 @@
-package com.kh.myapp3.domain.dao;
+package com.kh.myapp3.domain.admin;
 
 import com.kh.myapp3.domain.Member;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Slf4j
 @Repository
-@RequiredArgsConstructor
-public class MemberDAOImpl implements MemberDAO{
-
+@AllArgsConstructor
+public class AdminMemberDAOImpl implements AdminMemberDAO{
     private final JdbcTemplate jt;
 
     /**
@@ -80,11 +81,11 @@ public class MemberDAOImpl implements MemberDAO{
         StringBuffer sql = new StringBuffer();
         sql.append("update member ");
         sql.append("   set nickname = ?, ");
+        sql.append("       pw = ?, ");
         sql.append("       udate = systimestamp ");
         sql.append(" where member_id = ? ");
-        sql.append("   and pw = ? ");
 
-        result = jt.update(sql.toString(), member.getNickname(), memberId, member.getPw());
+        result = jt.update(sql.toString(), member.getNickname(),  member.getPw(), memberId);
         return result;
     }
 
@@ -94,11 +95,26 @@ public class MemberDAOImpl implements MemberDAO{
      * @param memberId 아이디
      */
     @Override
-    public int del(Long memberId, String pw) {
+    public int del(Long memberId) {
         int result = 0;
-        String sql = "delete from member where member_id = ? and pw = ? ";
+        String sql = "delete from member where member_id = ? ";
 
-        result = jt.update(sql, memberId, pw);
+        result = jt.update(sql, memberId);
         return result;
+    }
+
+    /**
+     * 목록
+     *
+     * @return 회원전체
+     */
+    @Override
+    public List<Member> all() {
+
+        StringBuffer sql = new StringBuffer();
+        sql.append("select member_id, email, pw, nickname, cdate, udate ");
+        sql.append("  from member ");
+
+        return jt.query(sql.toString(), new BeanPropertyRowMapper<>(Member.class));
     }
 }

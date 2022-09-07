@@ -89,12 +89,4 @@ public class MemberController {
         return "redirect:/";
     }
 
-    //목록화면 GET /members
-    @GetMapping("/all")
-    public String all() {
-
-        return "member/all";
-    }
-
-
 }
