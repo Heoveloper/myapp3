@@ -20,10 +20,13 @@
     <h3 th:text="#{title.member.add}"></h3>
     <hr>
     <form id="frm" action="" method="POST" th:object="${addForm}">
+        <div th:if="${#fields.hasGlobalErrors()}">
+            <p class="errmsg" th:each="err:${#fields.globalErrors()}" th:text="${err}"></p>
+        </div>
         <div>
             <label for="" th:text="#{label.member.email}">이메일</label>
             <input type="email" th:field="*{email}">
-<!--            <span class="errmsg"></span>-->
+            <span class="errmsg"></span>
             <span th:errorclass="errmsg" th:errors="*{email}"></span>
         </div>
         <div>

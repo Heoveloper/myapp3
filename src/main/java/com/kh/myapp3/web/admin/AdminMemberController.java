@@ -46,6 +46,31 @@ public class AdminMemberController {
             return "admin/member/addForm_old";
         }
 
+        //비즈니스 규칙 체크(개발자로직 체크)
+        //1) 이메일에 @가 없으면 오류 (Validation의 @Email 어노테이션으로도 가능한데 코드 연습)
+        if(!addForm.getEmail().contains("@")) {
+
+            //rejectValue: 오류필드, 에러코드, 디폴트메세지(정의된 메세지가 없으면 띄워짐)
+            bindingResult.rejectValue("email", "emailChk1","이메일 형식에 맞지 않습니다.");
+            return "admin/member/addForm_old";
+        }
+        if(addForm.getEmail().length() > 5) {
+
+            //rejectValue: 오류필드, 에러코드, 아규먼트(전달인자), 디폴트메세지(정의된 메세지가 없으면 띄워짐)
+            bindingResult.rejectValue("email", "emailChk2", new String[]{"0", "5"}, "이메일 길이가 초과되었습니다.");
+            return "admin/member/addForm_old";
+        }
+        //2) ObjectError: 2개 이상의 필드 분석을 통해 오류 검증
+        //      비밀번호, 별칭의 자리수가 모두 5미만인 경우 (코드 연습)
+        if(addForm.getPw().trim().length() < 5 && addForm.getNickname().trim().length() < 5) {
+
+            //reject: 필드정보가 없다.
+            bindingResult.reject("memberChk", new String[]{"5"}, "비밀번호, 별칭의 자리수가 모두 5 미만입니다.");
+            return "admin/member/addForm_old";
+        }
+
+
+
         //회원등록
         Member member = new Member();
         member.setEmail(addForm.getEmail());
