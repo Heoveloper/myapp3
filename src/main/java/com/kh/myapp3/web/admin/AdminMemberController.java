@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -26,13 +27,51 @@ public class AdminMemberController {
     //등록화면
     @GetMapping("/add")
     public String addForm(Model model) {
-        model.addAttribute("addForm", new AddForm());
-        return "admin/member/addForm_old";    //등록 화면
+        model.addAttribute("form", new AddForm());
+        return "admin/member/addForm";    //등록 화면
     }
 
     //등록처리
     @PostMapping("/add")
-    public String add(@Valid @ModelAttribute AddForm addForm, BindingResult bindingResult) {
+    public String add(
+            @Valid @ModelAttribute("form") AddForm addForm,
+            BindingResult bindingResult,
+            RedirectAttributes redirectAttributes   //리다이렉트할 때 정보를 유지하기 위해 사용
+    ) {
+        //검증로직
+//        @ModelAttribute 어노테이션이 만들어준다 ↓
+//        model.addAttribute("addForm", form);
+        log.info("addForm={}", addForm);
+//        if(addForm.getEmail() == null || addForm.getEmail().trim().length() == 0) {
+//
+//            return "admin/member/addForm_old";  //등록 화면 다시 띄우기
+//        }
+        if(bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "admin/member/addForm";
+        }
+        //회원아이디 중복체크
+        Boolean isExist = adminMemberSVC.dupChkOfMemberEmail(addForm.getEmail());
+        if(isExist) {
+            bindingResult.rejectValue("email", "dup.email", "동일한 이메일이 존재합니다.");
+            return "admin/member/addForm";
+
+        }
+
+        //회원등록
+        Member member = new Member();
+        member.setEmail(addForm.getEmail());
+        member.setPw(addForm.getPw());
+        member.setNickname(addForm.getNickname());
+        Member insertedMember = adminMemberSVC.insert(member);
+
+        Long id = insertedMember.getMemberId();
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/admin/members/{id}"; //회원 상세 화면
+    }
+
+    //등록처리 백업
+    public String add2(@Valid @ModelAttribute AddForm addForm, BindingResult bindingResult) {
         //검증로직
 //        @ModelAttribute 어노테이션이 만들어준다 ↓
 //        model.addAttribute("addForm", form);
