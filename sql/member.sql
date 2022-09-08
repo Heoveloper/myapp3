@@ -18,7 +18,6 @@ alter table member add constraint member_email_un unique (email);
 --not null
 alter table member modify email constraint member_email_nn not null;
 alter table member modify pw constraint member_pw_nn not null;
-alter table member modify nickname constraint member_nickname_nn not null;
 alter table member modify cdate constraint member_cdate_nn not null;
 alter table member modify udate constraint member_udate_nn not null;
 

@@ -9,8 +9,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -25,18 +27,23 @@ public class AdminMemberController {
     @GetMapping("/add")
     public String addForm(Model model) {
         model.addAttribute("addForm", new AddForm());
-        return "admin/member/addForm";    //등록 화면
+        return "admin/member/addForm_old";    //등록 화면
     }
 
     //등록처리
     @PostMapping("/add")
-    public String add(@ModelAttribute AddForm addForm) {
+    public String add(@Valid @ModelAttribute AddForm addForm, BindingResult bindingResult) {
         //검증로직
+//        @ModelAttribute 어노테이션이 만들어준다 ↓
 //        model.addAttribute("addForm", form);
         log.info("addForm={}", addForm);
-        if(addForm.getEmail().trim().length() == 0) {
-
-            return "admin/member/addForm";  //등록 화면 다시 띄우기
+//        if(addForm.getEmail() == null || addForm.getEmail().trim().length() == 0) {
+//
+//            return "admin/member/addForm_old";  //등록 화면 다시 띄우기
+//        }
+        if(bindingResult.hasErrors()) {
+            log.info("errors={}", bindingResult);
+            return "admin/member/addForm_old";
         }
 
         //회원등록
