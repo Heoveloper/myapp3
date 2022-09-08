@@ -134,7 +134,7 @@ public class AdminMemberController {
         memberForm.setCdate(findedMember.getCdate());
         memberForm.setUdate(findedMember.getUdate());
 
-        model.addAttribute("memberForm", memberForm);
+        model.addAttribute("form", memberForm);
         return "admin/member/memberForm"; //회원 상세 화면
     }
 
