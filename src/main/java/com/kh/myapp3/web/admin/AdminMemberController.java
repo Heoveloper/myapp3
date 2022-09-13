@@ -7,6 +7,7 @@ import com.kh.myapp3.web.admin.form.member.EditForm;
 import com.kh.myapp3.web.admin.form.member.MemberForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -35,12 +37,12 @@ public class AdminMemberController {
     @PostMapping("/add")
     public String add(
             @Valid @ModelAttribute("form") AddForm addForm,
-            BindingResult bindingResult,
+            BindingResult bindingResult,            //Form객체 바로 다음에 와야 한다.
             RedirectAttributes redirectAttributes   //리다이렉트할 때 정보를 유지하기 위해 사용
     ) {
         //검증로직
 //        @ModelAttribute 어노테이션이 만들어준다 ↓
-//        model.addAttribute("addForm", form);
+//        model.addAttribute("addForm", addForm);
         log.info("addForm={}", addForm);
 //        if(addForm.getEmail() == null || addForm.getEmail().trim().length() == 0) {
 //
@@ -74,7 +76,7 @@ public class AdminMemberController {
     public String add2(@Valid @ModelAttribute AddForm addForm, BindingResult bindingResult) {
         //검증로직
 //        @ModelAttribute 어노테이션이 만들어준다 ↓
-//        model.addAttribute("addForm", form);
+//        model.addAttribute("addForm", addForm);
         log.info("addForm={}", addForm);
 //        if(addForm.getEmail() == null || addForm.getEmail().trim().length() == 0) {
 //
@@ -150,7 +152,7 @@ public class AdminMemberController {
         editForm.setPw(findedMember.getPw());
         editForm.setNickname(findedMember.getNickname());
 
-        model.addAttribute("editForm", editForm);
+        model.addAttribute("form", editForm);
         return "admin/member/editForm";  //회원 수정화면
     }
 
@@ -187,7 +189,20 @@ public class AdminMemberController {
     @GetMapping("/all")
     public String all(Model model) {
 
-        List<Member> list = adminMemberSVC.all();
+        List<Member> members = adminMemberSVC.all();
+        List<MemberForm> list = new ArrayList<>();
+        //향상된 for문
+//        for(Member member : members) {
+//            MemberForm memberForm = new MemberForm();
+//            BeanUtils.copyProperties(member, memberForm);
+//            list.add(memberForm);
+//        }
+        //list.stream()으로 요소를 꺼내고, 람다식 함수 안에서는 요소를 어떻게 처리할지 로직 작성
+        members.stream().forEach(member -> {
+            MemberForm memberForm = new MemberForm();
+            BeanUtils.copyProperties(member, memberForm);
+            list.add(memberForm);
+        });
 
         model.addAttribute("list", list);
         return "admin/member/all";

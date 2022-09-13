@@ -44,8 +44,10 @@
 <!--				<td><a th:href="@{|/admin/members/${rec.memberId}|}">[[${rec.memberId}]]</a></td>-->
 				<td><!--a th:href="@{|/admin/members/{id}(id=${rec.memberId})|}"-->[[${rec.memberId}]]</a></td>
 				<td>[[${rec.email}]]</td>
-				<td>[[${#temporals.format(rec.cdate, 'yyyy-MM-dd HH:mm:ss')}]]</td>
-				<td>[[${#temporals.format(rec.udate, 'yyyy-MM-dd HH:mm:ss')}]]</td>
+<!--				<td>[[${#temporals.format(rec.cdate, 'yyyy-MM-dd HH:mm:ss')}]]</td>-->
+<!--				<td>[[${#temporals.format(rec.udate, 'yyyy-MM-dd HH:mm:ss')}]]</td>-->
+				<td>[[${{rec.cdate}}]]</td>
+				<td>[[${{rec.udate}}]]</td>
 			</tr>
 		</tbody>
 	</table>

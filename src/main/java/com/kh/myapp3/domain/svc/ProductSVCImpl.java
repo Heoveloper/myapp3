@@ -40,7 +40,7 @@ public class ProductSVCImpl implements ProductSVC {
 
     //삭제
     @Override
-    public void delete(Long productId) {
+    public void delete(Long productId)   {
         productDAO.delete(productId);
     }
 
