@@ -42,7 +42,7 @@
 <!--    <h3>[[#{title.member.add}]]</h3>-->
 <h3 th:text="#{title.member.add}"></h3>
 <hr>
-<form id="frm" action="" method="POST" th:object="${form}">
+<form id="frm" action="" method="POST" th:object="${form}"  >
     <div th:if="${#fields.hasGlobalErrors()}">
         <p class="errmsg" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
     </div>
