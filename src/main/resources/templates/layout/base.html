@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko"
-      th:fragment="layout (title, content, css, js, style)"
+      th:fragment="layout (title, content, css, js, style, footer)"
       xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
@@ -26,8 +26,8 @@
     <div th:replace="${content}">
         <p>Layout content</p>
     </div>
-    <footer>
-        Layout footer
+    <footer th:replace="${footer}">
+        Common footer
     </footer>
 </body>
 </html>

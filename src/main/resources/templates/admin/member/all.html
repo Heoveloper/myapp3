@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html lang="ko"
-      th:replace="~{layout/base :: layout(~{::title}, ~{::div#container}, ~{::link}, ~{::script}, ~{::style})}"
+      th:replace="~{layout/base :: layout(
+      ~{::title},
+      ~{::div#container},
+      ~{::link},
+      ~{::script},
+      ~{::style},
+      _
+      )}"
       xmlns:th="http://www.thymeleaf.org">
+<!--스타일을 안쓰겠다: ~{::style} => ~{}-->
+<!--      ~{layout/common_ui::footer2}-->
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
