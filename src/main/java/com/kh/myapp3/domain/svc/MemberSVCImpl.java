@@ -1,10 +1,12 @@
 package com.kh.myapp3.domain.svc;
 
-import com.kh.myapp3.domain.Member;
+import com.kh.myapp3.domain.dao.Member;
 import com.kh.myapp3.domain.dao.MemberDAO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -66,5 +68,17 @@ public class MemberSVCImpl implements MemberSVC{
         int cnt = memberDAO.del(memberId, pw);
         log.info("삭제건수={}", cnt);
         return cnt;
+    }
+
+    /**
+     * 로그인
+     *
+     * @param email 이메일
+     * @param pw    비밀번호
+     * @return 회원
+     */
+    @Override
+    public Optional<Member> login(String email, String pw) {
+        return memberDAO.login(email, pw);
     }
 }
