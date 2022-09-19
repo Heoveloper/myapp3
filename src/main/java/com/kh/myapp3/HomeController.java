@@ -67,10 +67,26 @@ public class HomeController {
 
         //세션에 회원정보 저장
         LoginMember loginMember = new LoginMember(findedMember.getEmail(), findedMember.getNickname());
+        //request.getSession(true):
+        //세션정보가 있으면 가져오고 없으면 세션을 생성
         HttpSession session = request.getSession(true);
         session.setAttribute("LoginMember", loginMember);
 
-
         return "afterLogin";
+    }
+
+    //로그아웃
+    @GetMapping("logout")
+    public String logout(
+            HttpServletRequest request
+    ) {
+        //request.getSession(false):
+        //세션정보가 있으면 가져오고 없으면 세션을 생성하지 않음
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.invalidate();
+        }
+
+        return "redirect:/"; //초기화면 이동
     }
 }
