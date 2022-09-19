@@ -20,7 +20,7 @@ class MemberDAOImplTest {
     @DisplayName("회원존재유무 (존재할 때)")
     void login() {
         String email = "test1@test.com";
-        String pw = "1234";
+        String pw = "123455";
         Optional<Member> login = memberDAO.login(email, pw);
 
         //long count = login.stream().filter(member -> member.getEmail().equals("test1@test.com"))

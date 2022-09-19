@@ -6,9 +6,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>로그인</title>
+    <style>
+        .fieldError {
+            font-size: 0.8em;
+            color: red;
+        }
+    </style>
 </head>
 
 <body>
-    로그인
+    <div class="container">
+        <form action="" th:method="post" th:object="${form}">
+            <div th:if="${#fields.hasGlobalErrors()}">
+                <p class="fieldError" th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+            </div>
+            <div class=""><input type="text" placeholder="이메일" th:field="*{email}"></div>
+            <div><span class="fieldError" th:errors="*{email}"></span></div>
+            <div class=""><input type="password" placeholder="비밀번호" th:field="*{pw}"></div>
+            <div class=""><button id="loginBtn">로그인</button></div>
+        </form>
+    </div>
 </body>
 </html>
