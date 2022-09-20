@@ -48,7 +48,6 @@ public class HomeController {
             BindingResult bindingResult,
             HttpServletRequest request
     ) {
-        //검증 로직
 
         //기본 검증
         if (bindingResult.hasErrors()) {
@@ -65,11 +64,12 @@ public class HomeController {
         //회원인 경우
         Member findedMember = member.get();
 
-        //세션에 회원정보 저장
+        //세션에 저장할 회원정보 생성
         LoginMember loginMember = new LoginMember(findedMember.getEmail(), findedMember.getNickname());
         //request.getSession(true):
-        //세션정보가 있으면 가져오고 없으면 세션을 생성
+        //세션정보가 있으면 가져오고 없으면 세션을 생성(세션 생성)
         HttpSession session = request.getSession(true);
+        //세션에 회원정보 저장
         session.setAttribute("LoginMember", loginMember);
 
         return "afterLogin";
@@ -81,9 +81,10 @@ public class HomeController {
             HttpServletRequest request
     ) {
         //request.getSession(false):
-        //세션정보가 있으면 가져오고 없으면 세션을 생성하지 않음
+        //세션정보가 있으면 가져오고 없으면 세션을 생성하지 않음(세션 조회)
         HttpSession session = request.getSession(false);
         if (session != null) {
+            //모든 세션정보 삭제
             session.invalidate();
         }
 

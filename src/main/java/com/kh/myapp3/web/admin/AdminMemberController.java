@@ -14,6 +14,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -187,16 +189,28 @@ public class AdminMemberController {
 
     //목록화면
     @GetMapping("/all")
-    public String all(Model model) {
+    public String all(
+            Model model,
+            HttpServletRequest request
+    ) {
+
+        //로그인 유무->세션정보를 통해 확인
+        //세션 조회
+        HttpSession isLogin = request.getSession(false);
+        if (isLogin == null || isLogin.getAttribute("LoginMember") == null) {
+
+            return "redirect:/login";
+        }
 
         List<Member> members = adminMemberSVC.all();
         List<MemberForm> list = new ArrayList<>();
-        //향상된 for문
+        //case1) 향상된 for문
 //        for(Member member : members) {
 //            MemberForm memberForm = new MemberForm();
 //            BeanUtils.copyProperties(member, memberForm);
 //            list.add(memberForm);
 //        }
+        //case2) 람다식 함수
         //list.stream()으로 요소를 꺼내고, 람다식 함수 안에서는 요소를 어떻게 처리할지 로직 작성
         members.stream().forEach(member -> {
             MemberForm memberForm = new MemberForm();
