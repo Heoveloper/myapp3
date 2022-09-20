@@ -1,7 +1,7 @@
 package com.kh.myapp3.web.admin;
 
-import com.kh.myapp3.domain.dao.Member;
 import com.kh.myapp3.domain.admin.AdminMemberSVC;
+import com.kh.myapp3.domain.dao.Member;
 import com.kh.myapp3.web.admin.form.member.AddForm;
 import com.kh.myapp3.web.admin.form.member.EditForm;
 import com.kh.myapp3.web.admin.form.member.MemberForm;
@@ -14,8 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -189,19 +187,7 @@ public class AdminMemberController {
 
     //목록화면
     @GetMapping("/all")
-    public String all(
-            Model model,
-            HttpServletRequest request
-    ) {
-
-        //로그인 유무->세션정보를 통해 확인
-        //세션 조회
-        HttpSession isLogin = request.getSession(false);
-        if (isLogin == null || isLogin.getAttribute("LoginMember") == null) {
-
-            return "redirect:/login";
-        }
-
+    public String all(Model model) {
         List<Member> members = adminMemberSVC.all();
         List<MemberForm> list = new ArrayList<>();
         //case1) 향상된 for문

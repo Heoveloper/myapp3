@@ -4,14 +4,12 @@ import com.kh.myapp3.domain.dao.Member;
 import com.kh.myapp3.domain.svc.MemberSVC;
 import com.kh.myapp3.web.form.LoginForm;
 import com.kh.myapp3.web.session.LoginMember;
+import com.kh.myapp3.web.session.LoginOkConst;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -46,7 +44,8 @@ public class HomeController {
     public String login(
             @Valid @ModelAttribute("form") LoginForm loginForm,
             BindingResult bindingResult,
-            HttpServletRequest request
+            HttpServletRequest request,
+            @RequestParam(value = "requestURI", required = false, defaultValue = "/") String requestURI
     ) {
 
         //기본 검증
@@ -70,9 +69,13 @@ public class HomeController {
         //세션정보가 있으면 가져오고 없으면 세션을 생성(세션 생성)
         HttpSession session = request.getSession(true);
         //세션에 회원정보 저장
-        session.setAttribute("LoginMember", loginMember);
+        session.setAttribute(LoginOkConst.LOGIN_MEMBER, loginMember);
 
-        return "afterLogin";
+        if (requestURI.equals("/")) {
+            return "afterLogin";
+        }
+
+        return "redirect:" + requestURI;
     }
 
     //로그아웃
